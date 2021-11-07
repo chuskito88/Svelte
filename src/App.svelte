@@ -31,11 +31,61 @@
 	let monitores = [];
 
 
+	const cargarClientes = async () => {
+		const querySnapshot = await getDocs(collection(db, "clientes"));
+		let listado = [];
+		querySnapshot.forEach((lista) => {
+			listado.push({ ...lista.data(), id: lista.id });
+		});
+		clientes = [...listado];
+		console.log(clientes);
+	};
+	cargarClientes();
 </script>
 
 <main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+	{#each clientes as c, i}
+		{#if c.imagen}
+			<img
+				class="object-center object-contain w-full h-full"
+				src={c.imagen}
+				alt="thumbnail"
+			/>
+		{:else}
+			<img
+				class="object-center object-contain w-full h-full"
+				src="images/no-product.jpg"
+				alt="thumbnail"
+			/>
+		{/if}
+
+		<p>Nombre: {c.nombre}</p>
+		<p>Apellidos: {c.apellidos}</p>
+		<p>Horario: {c.horario}</p>
+		<p>Edad: {c.edad}</p>
+	{/each}
+
+
+
+
+	<h1>Form Cliente</h1>
+	<form class="content">
+		<p>Nombre</p>
+		<input type="text" bind:value={clientes.nombre} />
+		<p>Apellidos</p>
+		<input type="text" bind:value={clientes.apellidos} />
+		<p>Horario</p>
+		<select bind:value={clientes.horario}>
+			<option>Mañana</option>
+			<option>Tarde</option>
+		</select>
+		<p>Imagen</p>
+		<input type="text" bind:value={clientes.imagen} />
+		<button type=submit>
+			Submit
+		</button>
+	</form>
+
 </main>
 
 <style>
