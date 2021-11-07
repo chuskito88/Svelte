@@ -1,5 +1,36 @@
 <script>
 	export let name;
+	//Importamos la base de datos
+	import { db } from "./firebase";
+	import {
+		collection,
+		getDocs,
+		doc,
+		addDoc,
+		updateDoc,
+		deleteDoc,
+	} from "firebase/firestore";
+
+	let cliente = {
+		nombre: "",
+		apellidos: "",
+		horario: "",
+		imagen: "",
+		edad: "",
+	};
+	let monitor = {
+		nombre: "",
+		apellidos: "",
+		horario: "",
+		imagen: "",
+		edad: "",
+	};
+
+	let clientes = [];
+
+	let monitores = [];
+
+
 </script>
 
 <main>
