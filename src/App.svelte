@@ -27,23 +27,15 @@
 		imagen: "",
 		edad: "",
 	};
-	let monitor2 = {
-		id: "",
-		nombre: "",
-		apellidos: "",
-		horario: "",
-		imagen: "",
-		edad: "",
-	};
 
 	let clientes = [];
 
 	let monitores = [];
 
-	let monitores2 = [];
 
 	let editar = false;
 
+	//FUNCIONES PARA CLIENTES
 	const cargarClientes = async () => {
 		const querySnapshot = await getDocs(collection(db, "clientes"));
 		let listado = [];
@@ -66,20 +58,10 @@
 		editar = false;
 	}
 
-	const randomMonitor = async () => {
-		const querySnapshot = await getDocs(collection(db, "monitores"));
-		let listada = [];
-		querySnapshot.forEach((lista) => {
-			listada.push({ ...lista.data(), id: lista.id });
-		});
-		monitores2 = [...listada];
-		
-	};
-	
 	const saveCliente = async () => {
-		await updateDoc(doc(db, "articulos", product.id), product);
+		await updateDoc(doc(db, "clientes", product.id), product);
 		await loadData();
-		vaciarFormulario();
+		emptyform();
 	};
 
 	const editCliente = (c) => {
@@ -110,6 +92,65 @@
 		addClientes();
 	};
 
+
+
+	//FUNCIONES PARA MONITORES
+	const cargarMonitor = async () => {
+		const querySnapshot = await getDocs(collection(db, "monitores"));
+		let listado = [];
+		querySnapshot.forEach((lista) => {
+			listado.push({ ...lista.data(), id: lista.id });
+		});
+		monitores = [...listado];
+		console.log(monitores);
+	};
+	cargarMonitor();
+
+	const emptyform2 = async () => {
+		monitor = {
+			nombre: "",
+			apellidos: "",
+			horario: "",
+			imagen: "",
+			edad: "",
+		};
+		editar = false;
+	}
+	
+	const saveMonitor = async () => {
+		await updateDoc(doc(db, "monitores", product.id), product);
+		await loadData();
+		emptyform2();
+	};
+
+	const editMonitor = (m) => {
+		monitor = Object.assign({}, m);
+		editar = true;
+	};
+
+	const deleteMonitor = async (id) => {
+		await deleteDoc(doc(db, "monitores", id));
+		await cargarMonitor();
+		emptyform2();
+	}; 
+
+	const addMonitor = async () => {
+		await addDoc(collection(db, "monitores"), monitor);
+		await cargarMonitor();
+		emptyform2();
+	}; 
+
+	const onSubmitHandler2 = (e) => {
+		if (editar) {
+			// Guardamos
+			console.log("Guardando...");
+			saveMonitor();
+		} else {
+			addMonitor();
+		}
+		addMonitor();
+	};
+
 </script>
 
 <main>
@@ -132,6 +173,29 @@
 			<p>Edad: {c.edad}</p>
 			<button on:click="{editCliente(c)}">Editar</button>
 			<button on:click="{deleteClientes(c.id)}">Eiminar</button>
+			<br>
+		{/each}
+	</div>
+
+	<div>
+		{#each monitores as m, i}
+			{#if m.imagen}
+				<img
+					src={m.imagen}
+					alt="thumbnail"
+				/>
+			{:else}
+				<p
+					No encontrada
+				/>
+			{/if}
+
+			<p>Nombre: {m.nombre}</p>
+			<p>Apellidos: {m.apellidos}</p>
+			<p>Horario: {m.horario}</p>
+			<p>Edad: {m.edad}</p>
+			<button on:click="{editMonitor(m)}">Editar</button>
+			<button on:click="{deleteMonitor(m.id)}">Eiminar</button>
 			<br>
 		{/each}
 	</div>
@@ -172,7 +236,7 @@
 
 	<div class:active={active} id="monito">
 		<h1>Form Monitor</h1>
-		<form on:submit|preventDefault={onSubmitHandler}>
+		<form on:submit|preventDefault={onSubmitHandler2}>
 			<p>Nombre</p>
 			<input type="text" bind:value={monitor.nombre} />
 			<p>Apellidos</p>
