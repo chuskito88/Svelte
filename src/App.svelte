@@ -1,5 +1,6 @@
 <script>
 	//Importamos la base de datos
+	import { NotificationDisplay, notifier } from '@beyonk/svelte-notifications';
 	import { db } from "./firebase";
 	import {
 		collection,
@@ -10,6 +11,7 @@
 		deleteDoc,
 	} from "firebase/firestore";
 
+	let n;
 	let active = false;
 
 	let cliente = {
@@ -17,7 +19,6 @@
 		apellidos: "",
 		horario: "",
 		imagen: "",
-		monitor: "",
 		edad: "",
 	};
 	let monitor = {
@@ -34,6 +35,11 @@
 
 
 	let editar = false;
+	let message = "";
+
+	const notify = async (message) => {
+		notifier.danger(message, 7000); 
+	};
 
 	//FUNCIONES PARA CLIENTES
 	const cargarClientes = async () => {
@@ -59,37 +65,43 @@
 	}
 
 	const saveCliente = async () => {
-		await updateDoc(doc(db, "clientes", product.id), product);
+		await updateDoc(doc(db, "clientes", cliente.id), cliente);
 		await loadData();
 		emptyform();
+		message = "Cliente guardado";
+		notify(message);
 	};
 
 	const editCliente = (c) => {
 		cliente = Object.assign({}, c);
 		editar = true;
+		message = "Cliente a editar";
+		notify(message);
 	};
 
 	const deleteClientes = async (id) => {
 		await deleteDoc(doc(db, "clientes", id));
 		await cargarClientes();
 		emptyform();
+		message = "Cliente borrado";
+		notify(message);
 	}; 
 
 	const addClientes = async () => {
 		await addDoc(collection(db, "clientes"), cliente);
 		await cargarClientes();
 		emptyform();
+		message = "Cliente añadido";
+		notify(message);
 	}; 
 
 	const onSubmitHandler = (e) => {
 		if (editar) {
-			// Guardamos
 			console.log("Guardando...");
 			saveCliente();
 		} else {
 			addClientes();
 		}
-		addClientes();
 	};
 
 
@@ -118,26 +130,34 @@
 	}
 	
 	const saveMonitor = async () => {
-		await updateDoc(doc(db, "monitores", product.id), product);
+		await updateDoc(doc(db, "monitores", monitore.id), monitor);
 		await loadData();
 		emptyform2();
+		message = "Monitor guardado";
+		notify(message);
 	};
 
 	const editMonitor = (m) => {
 		monitor = Object.assign({}, m);
 		editar = true;
+		message = "Monitor editado";
+		notify(message);
 	};
 
 	const deleteMonitor = async (id) => {
 		await deleteDoc(doc(db, "monitores", id));
 		await cargarMonitor();
 		emptyform2();
+		message = "Monitor borrado";
+		notify(message);
 	}; 
 
 	const addMonitor = async () => {
 		await addDoc(collection(db, "monitores"), monitor);
 		await cargarMonitor();
 		emptyform2();
+		message = "Monitor añadido";
+		notify(message);
 	}; 
 
 	const onSubmitHandler2 = (e) => {
