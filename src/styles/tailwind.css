@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    main{
+        @apply bg-indigo-200;
+    }
+    button{
+        @apply bg-pink-200 hover:bg-pink-500 hover:text-white text-pink-500 text-center py-2 px-4 rounded m-5;
+    }
+    
+    .cabecera{
+        @apply py-8 px-4 bg-purple-400 border border-indigo-500 shadow-lg flex;
+    }
+    .cabecera h1{
+        @apply text-yellow-400 flex justify-center text-3xl;
+    }
+    .imagen_cl{
+        @apply object-contain h-48 w-full;
+    }
+
+    .monitores_print{
+        @apply flex justify-center text-xl p-16;
+    }
+    .clientes_print{
+        @apply flex justify-center text-xl p-16;
+    }
+    .monitores_print p, button{
+        @apply m-5;
+    }
+    .clientes_print p, button{
+        @apply m-5;
+    }
+    .active{
+		@apply hidden;
+	}
+    .form_cli{
+        @apply flex flex justify-center m-5 p-14;
+    }
+    .bot_mon{
+        @apply flex flex justify-center;
+    }
+    p{
+        @apply text-green-500 text-xl;
+    }
+    h1{
+        @apply text-red-500 text-4xl;
+    }
+    fieldset{
+        @apply text-red-500 text-4xl;
+    }
+    form input{
+        @apply rounded-lg;
+    }
+    .dos{
+        @apply m-5;
+    }
+}
