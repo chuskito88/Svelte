@@ -55,6 +55,7 @@
 
 	const emptyform = async () => {
 		cliente = {
+			id: "",
 			nombre: "",
 			apellidos: "",
 			horario: "",
@@ -66,7 +67,7 @@
 
 	const saveCliente = async () => {
 		await updateDoc(doc(db, "clientes", cliente.id), cliente);
-		await loadData();
+		await cargarClientes();
 		emptyform();
 		message = "Cliente guardado";
 		notify(message);
@@ -120,6 +121,7 @@
 
 	const emptyform2 = async () => {
 		monitor = {
+			id: "",
 			nombre: "",
 			apellidos: "",
 			horario: "",
@@ -130,8 +132,8 @@
 	}
 	
 	const saveMonitor = async () => {
-		await updateDoc(doc(db, "monitores", monitore.id), monitor);
-		await loadData();
+		await updateDoc(doc(db, "monitores", monitor.id), monitor);
+		await cargarMonitor();
 		emptyform2();
 		message = "Monitor guardado";
 		notify(message);
@@ -164,6 +166,7 @@
 		if (editar) {
 			// Guardamos
 			console.log("Guardando...");
+			editMonitor();
 			saveMonitor();
 		} else {
 			addMonitor();
